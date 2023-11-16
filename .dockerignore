@@ -1,0 +1,14 @@
+# Exclude everything:
+#
+*
+
+# Now un-exclude required files or folders:
+#
+# required for building app
+!package*.json
+!node_modules
+!yarn.lock
+!src
+!database
+!config
+!redis

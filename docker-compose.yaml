@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+  redis-cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server
+    volumes:
+      - cache:/data
+    networks:
+      - app-network
+
+  mongodb-app:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - database_data:/var/lib/mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 1234
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: app.Dockerfile
+    restart: always
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongodb-app
+      - redis-cache
+    networks:
+      - app-network
+    volumes:
+      - ./:/var/www/node
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  cache:
+  database_data:

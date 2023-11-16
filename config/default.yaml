@@ -1,0 +1,8 @@
+database:
+  url: mongodb://mongodb-app:27017/api-test
+
+redis:
+  url: redis://redis-cache:6379
+
+service:
+  port: 4000
